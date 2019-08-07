@@ -1,0 +1,145 @@
+package som.lattice;
+
+//~--- non-JDK imports --------------------------------------------------------
+
+import som.Constants;
+
+//~--- JDK imports ------------------------------------------------------------
+
+/**
+ * <p>Title: govinda</p>
+ *
+ * <p>Description: </p>
+ *
+ * <p>Copyright: Copyright (c) 2005</p>
+ *
+ * <p>Company: </p>
+ *
+ * @author vignesh
+ * @version 1.0
+ */
+import java.io.Serializable;
+
+import java.util.Random;
+import java.util.logging.Logger;
+
+public class Points3d implements Serializable, Constants {
+    private final static Logger LOGGER      = Logger.getLogger(Points3d.class.getName());
+    double                      wts[][][]   = null;
+    transient public double     diff[][]    = null;
+    transient public int        winners[][] = null;
+
+    Points3d(boolean createDiffsWins) {
+        if (createDiffsWins) {
+            diff    = new double[featuremap_size_x][featuremap_size_y];
+            winners = new int[featuremap_size_x][featuremap_size_y];
+        }
+
+        wts = new double[dimension3_size][featuremap_size_x][featuremap_size_y];
+
+        for (int z = 0; z < dimension3_size; z++) {
+            for (int i = 0; i < featuremap_size_x; i++) {
+                for (int j = 0; j < featuremap_size_y; j++) {
+                    Random rand = new Random();
+
+                    this.wts[z][i][j] = rand.nextDouble() / (no_of_lattices * dimension3_size);
+
+                    // LOGGER.info(this.wts[i][j]);
+                }
+            }
+        }
+    }
+
+    Points3d(boolean createDiffsWins, boolean createWts) {
+        if (createDiffsWins) {
+            diff    = new double[featuremap_size_x][featuremap_size_y];
+            winners = new int[featuremap_size_x][featuremap_size_y];
+        }
+
+        if (createWts) {
+            wts = new double[dimension3_size][featuremap_size_x][featuremap_size_y];
+
+            for (int z = 0; z < dimension3_size; z++) {
+                for (int i = 0; i < featuremap_size_x; i++) {
+                    for (int j = 0; j < featuremap_size_y; j++) {
+                        Random rand = new Random();
+
+                        this.wts[z][i][j] = rand.nextDouble() / (no_of_lattices * dimension3_size);
+
+                        // LOGGER.info(this.wts[i][j]);
+                    }
+                }
+            }
+        }
+    }
+
+    Points3d(int cun_size, boolean createDiffsWins) {
+        if (createDiffsWins) {
+            diff    = new double[featuremap_size_x][featuremap_size_y];
+            winners = new int[featuremap_size_x][featuremap_size_y];
+        }
+
+        wts = new double[dimension3_size][featuremap_size_x][featuremap_size_y];
+
+        for (int z = 0; z < dimension3_size; z++) {
+            for (int i = 0; i < featuremap_size_x; i++) {
+                for (int j = 0; j < featuremap_size_y; j++) {
+                    Random rand = new Random();
+
+                    this.wts[z][i][j] = rand.nextDouble() / (no_of_lattices * cun_size * dimension3_size);
+
+                    // LOGGER.info(this.wts[i][j]);
+                }
+            }
+        }
+    }
+
+    Points3d(int cun_size, boolean createDiffsWins, boolean createWts) {
+        if (createDiffsWins) {
+            diff    = new double[featuremap_size_x][featuremap_size_y];
+            winners = new int[featuremap_size_x][featuremap_size_y];
+        }
+
+        if (createWts) {
+            wts = new double[dimension3_size][featuremap_size_x][featuremap_size_y];
+
+            for (int z = 0; z < dimension3_size; z++) {
+                for (int i = 0; i < featuremap_size_x; i++) {
+                    for (int j = 0; j < featuremap_size_y; j++) {
+                        Random rand = new Random();
+
+                        this.wts[z][i][j] = rand.nextDouble() / (no_of_lattices * cun_size * dimension3_size);
+
+                        // LOGGER.info(this.wts[i][j]);
+                    }
+                }
+            }
+        }
+    }
+
+    Points3d(int cun_size, boolean createDiffsWins, int winners[][]) {
+        if (createDiffsWins) {
+            diff    = new double[featuremap_size_x][featuremap_size_y];
+            winners = new int[featuremap_size_x][featuremap_size_y];
+        }
+
+        wts = new double[dimension3_size][featuremap_size_x][featuremap_size_y];
+
+        for (int i = 0; i < featuremap_size_x; i++) {
+            for (int j = 0; j < featuremap_size_y; j++) {
+                if (winners[i][j] == 0) {
+                    for (int z = 0; z < dimension3_size; z++) {
+                        Random rand = new Random();
+
+                        this.wts[z][i][j] = rand.nextDouble() / (no_of_lattices * cun_size * dimension3_size);
+
+                        // LOGGER.info(this.wts[i][j]);
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+//~ Formatted by Jindent --- http://www.jindent.com

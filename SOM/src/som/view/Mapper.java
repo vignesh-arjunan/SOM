@@ -1,50 +1,30 @@
 package som.view;
 
-//~--- non-JDK imports --------------------------------------------------------
-
 import som.Constants;
-
 import som.lattice.Lattice3d;
 
-//~--- JDK imports ------------------------------------------------------------
-
-/**
- * <p>Title: govinda</p>
- *
- * <p>Description: </p>
- *
- * <p>Copyright: Copyright (c) 2005</p>
- *
- * <p>Company: </p>
- *
- * @author vignesh
- * @version 1.0
- */
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.image.MemoryImageSource;
-
 import java.io.*;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.*;
-
 public class Mapper implements Constants, Runnable {
-    private final static Logger LOGGER            = Logger.getLogger(Mapper.class.getName());
-    private int                 width             = 400;
-    private int                 height            = 200;
-    public JFrame               frame             = new JFrame();
-    private GridLayout          mainLayout        = new GridLayout(1, 2);
-    private GridLayout          gridLayout1       = new GridLayout(1, 1);
-    private GridLayout          gridLayout2       = new GridLayout(1, 1);
-    public JButton              startStopButton   = new JButton();
-    public LatticeVisualizer    latticeVisualizer = new LatticeVisualizer();
-    private JPanel              jPanel2           = new JPanel();
-    public Lattice3d            lt                = null;
-    public boolean              startStopFlag;
+    private final static Logger LOGGER = Logger.getLogger(Mapper.class.getName());
+    private int width = 400;
+    private int height = 200;
+    public JFrame frame = new JFrame();
+    private GridLayout mainLayout = new GridLayout(1, 2);
+    private GridLayout gridLayout1 = new GridLayout(1, 1);
+    private GridLayout gridLayout2 = new GridLayout(1, 1);
+    public JButton startStopButton = new JButton();
+    public LatticeVisualizer latticeVisualizer = new LatticeVisualizer();
+    private JPanel jPanel2 = new JPanel();
+    public Lattice3d lt = null;
+    public boolean startStopFlag;
 
     public Mapper() throws Exception {
         jbInit();
@@ -65,14 +45,17 @@ public class Mapper implements Constants, Runnable {
             public void windowClosing(WindowEvent e) {
                 this_windowClosing(e);
             }
+
             @Override
             public void windowActivated(WindowEvent e) {
                 this_windowActivated(e);
             }
+
             @Override
             public void windowDeactivated(WindowEvent e) {
                 this_windowDeactivated(e);
             }
+
             @Override
             public void windowOpened(WindowEvent e) {
                 this_windowOpened(e);
@@ -142,14 +125,14 @@ public class Mapper implements Constants, Runnable {
                     File file = new File(System.getProperty("user.dir") + File.separator + "lattice");
 
                     try (FileInputStream fis1 = new FileInputStream(file.getAbsolutePath());
-                        ObjectInputStream ois1 = new ObjectInputStream(fis1)) {
+                         ObjectInputStream ois1 = new ObjectInputStream(fis1)) {
                         this.lt = (Lattice3d) ois1.readObject();
                     }
 
                     File file1 = new File(System.getProperty("user.dir") + File.separator + "vignesh_index_right");
 
                     try (FileInputStream fis2 = new FileInputStream(file1);
-                        DataInputStream dis2 = new DataInputStream(fis2)) {
+                         DataInputStream dis2 = new DataInputStream(fis2)) {
                         this.lt.temp = new double[actual_input_size_x][actual_input_size_y];
 
                         for (int index1 = 0; index1 < actual_input_size_y; index1++) {
@@ -179,7 +162,7 @@ public class Mapper implements Constants, Runnable {
                             for (int k = 0; k < featuremap_size_x; k++) {
                                 for (int l = 0; l < featuremap_size_x; l++) {
                                     this.lt.input[i - translation_factor_x][j - translation_factor_y][k][l] =
-                                        this.lt.temp[i + k][j + l] / (255 * 2);
+                                            this.lt.temp[i + k][j + l] / (255 * 2);
                                 }
                             }
                         }
@@ -190,24 +173,24 @@ public class Mapper implements Constants, Runnable {
                     for (int i = translation_factor_x; i < input_size_x + translation_factor_x; i++) {
                         for (int j = translation_factor_y; j < input_size_y + translation_factor_y; j++) {
                             temp_data[(j - translation_factor_y) * input_size_x + (i - translation_factor_x)] =
-                                (int) this.lt.temp[i][j];
+                                    (int) this.lt.temp[i][j];
                             temp_data[(j - translation_factor_y) * input_size_x + (i - translation_factor_x)] =
-                                (temp_data[(j - translation_factor_y) * input_size_x + (i - translation_factor_x)])
-                                | (temp_data[(j - translation_factor_y) * input_size_x + (i - translation_factor_x)]
-                                   << 8) | (temp_data[(j - translation_factor_y) * input_size_x + (i - translation_factor_x)]
+                                    (temp_data[(j - translation_factor_y) * input_size_x + (i - translation_factor_x)])
+                                            | (temp_data[(j - translation_factor_y) * input_size_x + (i - translation_factor_x)]
+                                            << 8) | (temp_data[(j - translation_factor_y) * input_size_x + (i - translation_factor_x)]
                                             << 16 | 0xFF000000);
                         }
                     }
 
                     MemoryImageSource mis = new MemoryImageSource(input_size_x, input_size_y, temp_data, 0,
-                                                input_size_x);
+                            input_size_x);
 
                     this.lt.setImage(frame.createImage(mis));
                     this.lt.setjFrame(frame);
 
                     for (int i = 0; i < lattice_size_x; i++) {
                         for (int j = 0; j < lattice_size_y; j++) {
-                            this.lt.pts[0][i][j].diff    = new double[featuremap_size_x][featuremap_size_y];
+                            this.lt.pts[0][i][j].diff = new double[featuremap_size_x][featuremap_size_y];
                             this.lt.pts[0][i][j].winners = new int[featuremap_size_x][featuremap_size_y];
                         }
                     }
@@ -243,7 +226,7 @@ public class Mapper implements Constants, Runnable {
                 }
 
                 try (FileOutputStream fos = new FileOutputStream(f.getAbsolutePath(), false);
-                    ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+                     ObjectOutputStream oos = new ObjectOutputStream(fos)) {
                     oos.writeObject(lt);
                 }
             } catch (Exception ex) {
@@ -256,6 +239,3 @@ public class Mapper implements Constants, Runnable {
         }
     }
 }
-
-
-//~ Formatted by Jindent --- http://www.jindent.com

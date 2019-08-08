@@ -1,37 +1,20 @@
 package som.lattice;
 
-//~--- non-JDK imports --------------------------------------------------------
-
 import som.Constants;
 
-//~--- JDK imports ------------------------------------------------------------
-
-/**
- * <p>Title: govinda</p>
- *
- * <p>Description: </p>
- *
- * <p>Copyright: Copyright (c) 2005</p>
- *
- * <p>Company: </p>
- *
- * @author vignesh
- * @version 1.0
- */
 import java.io.Serializable;
-
 import java.util.Random;
 import java.util.logging.Logger;
 
 public class Points3d implements Serializable, Constants {
-    private final static Logger LOGGER      = Logger.getLogger(Points3d.class.getName());
-    double                      wts[][][]   = null;
-    transient public double     diff[][]    = null;
-    transient public int        winners[][] = null;
+    private final static Logger LOGGER = Logger.getLogger(Points3d.class.getName());
+    double wts[][][] = null;
+    transient public double diff[][] = null;
+    transient public int winners[][] = null;
 
     Points3d(boolean createDiffsWins) {
         if (createDiffsWins) {
-            diff    = new double[featuremap_size_x][featuremap_size_y];
+            diff = new double[featuremap_size_x][featuremap_size_y];
             winners = new int[featuremap_size_x][featuremap_size_y];
         }
 
@@ -52,7 +35,7 @@ public class Points3d implements Serializable, Constants {
 
     Points3d(boolean createDiffsWins, boolean createWts) {
         if (createDiffsWins) {
-            diff    = new double[featuremap_size_x][featuremap_size_y];
+            diff = new double[featuremap_size_x][featuremap_size_y];
             winners = new int[featuremap_size_x][featuremap_size_y];
         }
 
@@ -75,7 +58,7 @@ public class Points3d implements Serializable, Constants {
 
     Points3d(int cun_size, boolean createDiffsWins) {
         if (createDiffsWins) {
-            diff    = new double[featuremap_size_x][featuremap_size_y];
+            diff = new double[featuremap_size_x][featuremap_size_y];
             winners = new int[featuremap_size_x][featuremap_size_y];
         }
 
@@ -96,7 +79,7 @@ public class Points3d implements Serializable, Constants {
 
     Points3d(int cun_size, boolean createDiffsWins, boolean createWts) {
         if (createDiffsWins) {
-            diff    = new double[featuremap_size_x][featuremap_size_y];
+            diff = new double[featuremap_size_x][featuremap_size_y];
             winners = new int[featuremap_size_x][featuremap_size_y];
         }
 
@@ -119,7 +102,7 @@ public class Points3d implements Serializable, Constants {
 
     Points3d(int cun_size, boolean createDiffsWins, int winners[][]) {
         if (createDiffsWins) {
-            diff    = new double[featuremap_size_x][featuremap_size_y];
+            diff = new double[featuremap_size_x][featuremap_size_y];
             winners = new int[featuremap_size_x][featuremap_size_y];
         }
 
@@ -140,6 +123,3 @@ public class Points3d implements Serializable, Constants {
         }
     }
 }
-
-
-//~ Formatted by Jindent --- http://www.jindent.com

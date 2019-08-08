@@ -1,30 +1,18 @@
 package som.lattice;
 
-/**
- * <p>Title: govinda</p>
- *
- * <p>Description: </p>
- *
- * <p>Copyright: Copyright (c) 2005</p>
- *
- * <p>Company: </p>
- *
- * @author vignesh
- * @version 1.0
- */
-import java.awt.Image;
+import som.Constants;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.MemoryImageSource;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import som.Constants;
 
 public class Lattice3d implements Serializable, Constants {
     private final static Logger LOGGER = Logger.getLogger(Lattice3d.class.getName());
@@ -118,10 +106,10 @@ public class Lattice3d implements Serializable, Constants {
         for (int i = translation_factor_x; i < lattice_size_x + translation_factor_x; i++) {
             for (int j = translation_factor_y; j < lattice_size_y + translation_factor_y; j++) {
                 for (int k = 0; k < featuremap_size_x; k++) {
-                    for (int l = 0; l < featuremap_size_x; l++) {                    
+                    for (int l = 0; l < featuremap_size_x; l++) {
                         this.input[i - translation_factor_x][j - translation_factor_y][k][l] = this.temp[i + k][j + l] / (255 * 2);
                     }
-                }                
+                }
             }
         }
 
@@ -192,7 +180,7 @@ public class Lattice3d implements Serializable, Constants {
                 for (int j = translation_factor_y; j < lattice_size_y + translation_factor_y; j++) {
                     for (int k = 0; k < featuremap_size_x; k++) {
                         for (int l = 0; l < featuremap_size_x; l++) {
-                            lattice.input[i - translation_factor_x][j - translation_factor_y][k][l] = lattice.temp[i+k][j+l] / (255 * 2);
+                            lattice.input[i - translation_factor_x][j - translation_factor_y][k][l] = lattice.temp[i + k][j + l] / (255 * 2);
                         }
                     }
                 }
@@ -528,7 +516,8 @@ public class Lattice3d implements Serializable, Constants {
         if (!f_lattice.exists()) {
             f_lattice.createNewFile();
         }
-        try (FileOutputStream fos = new FileOutputStream(f_lattice.getAbsolutePath(), false); ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+        try (FileOutputStream fos = new FileOutputStream(f_lattice.getAbsolutePath(), false);
+             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(this);
         }
         LOGGER.info("Saved");

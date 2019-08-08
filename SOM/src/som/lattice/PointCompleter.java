@@ -1,45 +1,32 @@
-
-/*
-* To change this template, choose Tools | Templates
-* and open the template in the editor.
- */
 package som.lattice;
 
-//~--- non-JDK imports --------------------------------------------------------
-
 import som.Constants;
-
-//~--- JDK imports ------------------------------------------------------------
 
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
-/**
- *
- * @author vignesh
- */
 public class PointCompleter extends Thread implements Constants {
-    private final static Logger                 LOGGER                  =
-        Logger.getLogger(PointCompleter.class.getName());
-    private int                                 trigerred_point_index_x = -1;
-    private int                                 trigerred_point_index_y = -1;
+    private final static Logger LOGGER =
+            Logger.getLogger(PointCompleter.class.getName());
+    private int trigerred_point_index_x = -1;
+    private int trigerred_point_index_y = -1;
     private final BlockingQueue<PointCompleter> queue;
-    private final int                           index_x;
-    private final int                           index_y;
-    private final Points3d                      pts[][][];
-    private final PointsMask                    pts_mask[][];
-    private final double                        input[][][][];
-    private final double                        random_mask[][];
+    private final int index_x;
+    private final int index_y;
+    private final Points3d pts[][][];
+    private final PointsMask pts_mask[][];
+    private final double input[][][][];
+    private final double random_mask[][];
 
     PointCompleter(BlockingQueue<PointCompleter> queue_p, int index_xp, int index_yp, PointsMask pts_mask_p[][],
                    double input_p[][][][], double random_mask_p[][], Points3d pts_p[][][]) {
-        queue       = queue_p;
-        index_x     = index_xp;
-        index_y     = index_yp;
-        pts_mask    = pts_mask_p;
-        input       = input_p;
+        queue = queue_p;
+        index_x = index_xp;
+        index_y = index_yp;
+        pts_mask = pts_mask_p;
+        input = input_p;
         random_mask = random_mask_p;
-        pts         = pts_p;
+        pts = pts_p;
     }
 
     private boolean checkMaxSum(int max_sum) {
@@ -51,9 +38,9 @@ public class PointCompleter extends Thread implements Constants {
     private void computeWinnersFirst(Lattice3d tmpLt, int indexa, int indexb) {
         for (int k = 0; k < featuremap_size_x; k++) {
             for (int l = 0; l < featuremap_size_y; l++) {
-                int    temp_index_x1 = 0;
-                int    temp_index_y1 = 0;
-                double temp_diff1    = 0;
+                int temp_index_x1 = 0;
+                int temp_index_y1 = 0;
+                double temp_diff1 = 0;
 
                 for (int i = 0; i < lattice_size_x; i++) {
                     for (int j = 0; j < lattice_size_y; j++) {
@@ -69,20 +56,20 @@ public class PointCompleter extends Thread implements Constants {
                                 - this.random_mask[indexa + k][indexb + l]);
 
                         if ((i == 0) && (j == 0)) {
-                            temp_index_x1                                            = i;
-                            temp_index_y1                                            = j;
+                            temp_index_x1 = i;
+                            temp_index_y1 = j;
                             tmpLt.pts[0][temp_index_x1][temp_index_y1].winners[k][l] = 1;
-                            temp_diff1                                               = tmpLt.pts[0][i][j].diff[k][l];
+                            temp_diff1 = tmpLt.pts[0][i][j].diff[k][l];
 
                             // LOGGER.info("one ");
                         } else {
                             if (tmpLt.pts[0][i][j].diff[k][l] < temp_diff1) {
                                 tmpLt.pts[0][temp_index_x1][temp_index_y1].winners[k][l] = 0;
-                                temp_index_x1                                            = i;
-                                temp_index_y1                                            = j;
+                                temp_index_x1 = i;
+                                temp_index_y1 = j;
                                 tmpLt.pts[0][temp_index_x1][temp_index_y1].winners[k][l] = 1;
-                                temp_diff1                                               =
-                                    tmpLt.pts[0][i][j].diff[k][l];
+                                temp_diff1 =
+                                        tmpLt.pts[0][i][j].diff[k][l];
 
                                 // LOGGER.info("two ");
                             } else {
@@ -118,9 +105,9 @@ public class PointCompleter extends Thread implements Constants {
                             continue;
                         }
 
-                        int    temp_index_x = 0;
-                        int    temp_index_y = 0;
-                        double temp_diff    = 0;
+                        int temp_index_x = 0;
+                        int temp_index_y = 0;
+                        double temp_diff = 0;
 
                         for (int i = 0; i < lattice_size_x; i++) {
                             for (int j = 0; j < lattice_size_y; j++) {
@@ -132,24 +119,24 @@ public class PointCompleter extends Thread implements Constants {
 
                                 newlt[0].pts[0][i][j].diff[k][l] = Math.abs(cumulative_wt
                                         - ((this.input[indexa][indexb][k][l]
-                                            + this.random_mask[indexa + k][indexb + l]) / (no_of_lattices * cun_size)));
+                                        + this.random_mask[indexa + k][indexb + l]) / (no_of_lattices * cun_size)));
 
                                 if ((i == 0) && (j == 0)) {
-                                    temp_index_x                                              = i;
-                                    temp_index_y                                              = j;
+                                    temp_index_x = i;
+                                    temp_index_y = j;
                                     newlt[0].pts[0][temp_index_x][temp_index_y].winners[k][l] = 1;
-                                    temp_diff                                                 =
-                                        newlt[0].pts[0][i][j].diff[k][l];
+                                    temp_diff =
+                                            newlt[0].pts[0][i][j].diff[k][l];
 
                                     // LOGGER.info("one ");
                                 } else {
                                     if (newlt[0].pts[0][i][j].diff[k][l] < temp_diff) {
                                         newlt[0].pts[0][temp_index_x][temp_index_y].winners[k][l] = 0;
-                                        temp_index_x                                              = i;
-                                        temp_index_y                                              = j;
+                                        temp_index_x = i;
+                                        temp_index_y = j;
                                         newlt[0].pts[0][temp_index_x][temp_index_y].winners[k][l] = 1;
-                                        temp_diff                                                 =
-                                            newlt[0].pts[0][i][j].diff[k][l];
+                                        temp_diff =
+                                                newlt[0].pts[0][i][j].diff[k][l];
 
                                         // LOGGER.info("two ");
                                     } else {
@@ -195,9 +182,9 @@ public class PointCompleter extends Thread implements Constants {
     private void computeSumsEds(Lattice3d tmpLt, int indexa, int indexb, int ltSums[][], double ltEds[][]) {
         for (int k = 0; k < featuremap_size_x; k++) {
             for (int l = 0; l < featuremap_size_y; l++) {
-                int    temp_index_x1 = 0;
-                int    temp_index_y1 = 0;
-                double temp_diff1    = 0;
+                int temp_index_x1 = 0;
+                int temp_index_y1 = 0;
+                double temp_diff1 = 0;
 
                 for (int i = 0; i < lattice_size_x; i++) {
                     for (int j = 0; j < lattice_size_y; j++) {
@@ -214,8 +201,8 @@ public class PointCompleter extends Thread implements Constants {
                         ltEds[i][j] += tmpLt.pts[0][i][j].diff[k][l];
 
                         if ((i == 0) && (j == 0)) {
-                            temp_index_x1                                            = i;
-                            temp_index_y1                                            = j;
+                            temp_index_x1 = i;
+                            temp_index_y1 = j;
                             tmpLt.pts[0][temp_index_x1][temp_index_y1].winners[k][l] = 1;
                             ltSums[temp_index_x1][temp_index_y1]++;
                             temp_diff1 = tmpLt.pts[0][i][j].diff[k][l];
@@ -223,8 +210,8 @@ public class PointCompleter extends Thread implements Constants {
                             if (tmpLt.pts[0][i][j].diff[k][l] < temp_diff1) {
                                 tmpLt.pts[0][temp_index_x1][temp_index_y1].winners[k][l] = 0;
                                 ltSums[temp_index_x1][temp_index_y1]--;
-                                temp_index_x1                                            = i;
-                                temp_index_y1                                            = j;
+                                temp_index_x1 = i;
+                                temp_index_y1 = j;
                                 tmpLt.pts[0][temp_index_x1][temp_index_y1].winners[k][l] = 1;
                                 ltSums[temp_index_x1][temp_index_y1]++;
                                 temp_diff1 = tmpLt.pts[0][i][j].diff[k][l];
@@ -239,10 +226,10 @@ public class PointCompleter extends Thread implements Constants {
     }
 
     private void completePoint() {
-        boolean   point_completed      = false;
-        boolean   computedWinnersFirst = false;
-        int       no_of_tries          = 0;
-        Lattice3d tmpLt                = new Lattice3d(cun_size, true, false);
+        boolean point_completed = false;
+        boolean computedWinnersFirst = false;
+        int no_of_tries = 0;
+        Lattice3d tmpLt = new Lattice3d(cun_size, true, false);
 
         trigerred_point_index_x = 0;
         trigerred_point_index_y = 0;
@@ -268,10 +255,10 @@ public class PointCompleter extends Thread implements Constants {
             no_of_tries++;
             useCunningLattice(tmpLt, index_x, index_y);
 
-            int    ltSums[][] = new int[lattice_size_x][lattice_size_y];
-            double ltEds[][]  = new double[lattice_size_x][lattice_size_y];
-            int    max_sum1   = 0;
-            double min_ed1    = 0.0;
+            int ltSums[][] = new int[lattice_size_x][lattice_size_y];
+            double ltEds[][] = new double[lattice_size_x][lattice_size_y];
+            int max_sum1 = 0;
+            double min_ed1 = 0.0;
 
             computeSumsEds(tmpLt, index_x, index_y, ltSums, ltEds);
 
@@ -280,21 +267,21 @@ public class PointCompleter extends Thread implements Constants {
                     if ((i == 0) && (j == 0)) {
                         trigerred_point_index_x = i;
                         trigerred_point_index_y = j;
-                        max_sum1                = ltSums[i][j];
-                        min_ed1                 = ltEds[i][j];
+                        max_sum1 = ltSums[i][j];
+                        min_ed1 = ltEds[i][j];
 
                         // LOGGER.info("one ");
                     } else if (ltSums[i][j] > max_sum1) {
                         trigerred_point_index_x = i;
                         trigerred_point_index_y = j;
-                        max_sum1                = ltSums[i][j];
-                        min_ed1                 = ltEds[i][j];
+                        max_sum1 = ltSums[i][j];
+                        min_ed1 = ltEds[i][j];
 
                         // LOGGER.info("two ");
                     } else if ((ltSums[i][j] == max_sum1) && (ltEds[i][j] < min_ed1)) {
                         trigerred_point_index_x = i;
                         trigerred_point_index_y = j;
-                        min_ed1                 = ltEds[i][j];
+                        min_ed1 = ltEds[i][j];
 
                         // LOGGER.info("three ");
                     } else {
@@ -322,7 +309,7 @@ public class PointCompleter extends Thread implements Constants {
                 LOGGER.info("Setting max sum: " + max_sum1);
                 LOGGER.info(trigerred_point_index_x + " " + trigerred_point_index_y);
                 this.pts_mask[index_x][index_y].done = true;
-                point_completed                      = true;
+                point_completed = true;
             }
 
             System.gc();
@@ -336,6 +323,3 @@ public class PointCompleter extends Thread implements Constants {
         queue.remove(this);
     }
 }
-
-
-//~ Formatted by Jindent --- http://www.jindent.com

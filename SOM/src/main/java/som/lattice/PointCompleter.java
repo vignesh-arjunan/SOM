@@ -1,13 +1,13 @@
 package som.lattice;
 
+import lombok.extern.java.Log;
 import som.Constants;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
+@Log
 public class PointCompleter extends Thread implements Constants {
-    private final static Logger LOGGER =
-            Logger.getLogger(PointCompleter.class.getName());
     private int trigerred_point_index_x = -1;
     private int trigerred_point_index_y = -1;
     private final BlockingQueue<PointCompleter> queue;
@@ -247,7 +247,7 @@ public class PointCompleter extends Thread implements Constants {
             // added for computing winners before hand ends
             // LOGGER.info("before creating newlt");
             if (no_of_tries == max_tries) {
-                LOGGER.info("Aborting point : " + index_x + " " + index_y + " - shall try later");
+                log.info("Aborting point : " + index_x + " " + index_y + " - shall try later");
 
                 break;
             }
@@ -292,7 +292,7 @@ public class PointCompleter extends Thread implements Constants {
             }
 
             if (!checkMaxSum(max_sum1 - 10)) {
-                LOGGER.info("Not Setting max sum: " + max_sum1);
+                log.info("Not Setting max sum: " + max_sum1);
             } else {
 
                 // int overlap_count = 0;
@@ -306,8 +306,8 @@ public class PointCompleter extends Thread implements Constants {
                 // }
                 // }
                 // LOGGER.info("Setting max sum: " + max_sum1 + ", overlap_count: " + overlap_count);
-                LOGGER.info("Setting max sum: " + max_sum1);
-                LOGGER.info(trigerred_point_index_x + " " + trigerred_point_index_y);
+                log.info("Setting max sum: " + max_sum1);
+                log.info(trigerred_point_index_x + " " + trigerred_point_index_y);
                 this.pts_mask[index_x][index_y].done = true;
                 point_completed = true;
             }
@@ -318,7 +318,7 @@ public class PointCompleter extends Thread implements Constants {
 
     @Override
     public void run() {
-        LOGGER.info("Thread started for " + this.index_x + ", " + this.index_y);
+        log.info("Thread started for " + this.index_x + ", " + this.index_y);
         completePoint();
         queue.remove(this);
     }

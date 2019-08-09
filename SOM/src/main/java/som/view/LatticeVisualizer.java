@@ -1,14 +1,14 @@
 package som.view;
 
+import lombok.extern.java.Log;
 import som.Constants;
 import som.lattice.Lattice3d;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.logging.Logger;
 
+@Log
 public class LatticeVisualizer extends JPanel implements Constants {
-    private final static Logger LOGGER = Logger.getLogger(LatticeVisualizer.class.getName());
     Lattice3d lt = null;
 
     void setLattice(Lattice3d lt) {
@@ -32,6 +32,3 @@ public class LatticeVisualizer extends JPanel implements Constants {
         }
     }
 }
-
-
-//~ Formatted by Jindent --- http://www.jindent.com

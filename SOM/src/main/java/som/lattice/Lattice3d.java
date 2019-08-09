@@ -1,5 +1,6 @@
 package som.lattice;
 
+import lombok.extern.java.Log;
 import som.Constants;
 
 import javax.swing.*;
@@ -12,10 +13,9 @@ import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+@Log
 public class Lattice3d implements Serializable, Constants {
-    private final static Logger LOGGER = Logger.getLogger(Lattice3d.class.getName());
     public transient double input[][][][];
     public transient double temp[][];
     private int trigerred_point_index_x = -1;
@@ -30,32 +30,32 @@ public class Lattice3d implements Serializable, Constants {
     private int m;
     public PointsMask pts_mask[][];
 
-    Lattice3d(boolean createDiffsWins) {
-        this.pts = new Points3d[1][lattice_size_x][lattice_size_y];
-        for (int i = 0; i < lattice_size_x; i++) {
-            for (int j = 0; j < lattice_size_y; j++) {
-                this.pts[0][i][j] = new Points3d(createDiffsWins);
-            }
-        }
-    }
-
-    Lattice3d(boolean createDiffsWins, boolean createWts) {
-        this.pts = new Points3d[1][lattice_size_x][lattice_size_y];
-        for (int i = 0; i < lattice_size_x; i++) {
-            for (int j = 0; j < lattice_size_y; j++) {
-                this.pts[0][i][j] = new Points3d(createDiffsWins, createWts);
-            }
-        }
-    }
-
-    Lattice3d(int cun_size, boolean createDiffsWins) {
-        this.pts = new Points3d[1][lattice_size_x][lattice_size_y];
-        for (int i = 0; i < lattice_size_x; i++) {
-            for (int j = 0; j < lattice_size_y; j++) {
-                this.pts[0][i][j] = new Points3d(cun_size, createDiffsWins);
-            }
-        }
-    }
+//    Lattice3d(boolean createDiffsWins) {
+//        this.pts = new Points3d[1][lattice_size_x][lattice_size_y];
+//        for (int i = 0; i < lattice_size_x; i++) {
+//            for (int j = 0; j < lattice_size_y; j++) {
+//                this.pts[0][i][j] = new Points3d(createDiffsWins);
+//            }
+//        }
+//    }
+//
+//    Lattice3d(boolean createDiffsWins, boolean createWts) {
+//        this.pts = new Points3d[1][lattice_size_x][lattice_size_y];
+//        for (int i = 0; i < lattice_size_x; i++) {
+//            for (int j = 0; j < lattice_size_y; j++) {
+//                this.pts[0][i][j] = new Points3d(createDiffsWins, createWts);
+//            }
+//        }
+//    }
+//
+//    Lattice3d(int cun_size, boolean createDiffsWins) {
+//        this.pts = new Points3d[1][lattice_size_x][lattice_size_y];
+//        for (int i = 0; i < lattice_size_x; i++) {
+//            for (int j = 0; j < lattice_size_y; j++) {
+//                this.pts[0][i][j] = new Points3d(cun_size, createDiffsWins);
+//            }
+//        }
+//    }
 
     Lattice3d(int cun_size, boolean createDiffsWins, boolean createWts) {
         this.pts = new Points3d[1][lattice_size_x][lattice_size_y];
@@ -143,8 +143,8 @@ public class Lattice3d implements Serializable, Constants {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
-        LOGGER.log(Level.INFO, "{0}", Runtime.getRuntime().totalMemory());
-        LOGGER.info(System.getProperty("user.dir"));
+        log.log(Level.INFO, "{0}", Runtime.getRuntime().totalMemory());
+        log.info(System.getProperty("user.dir"));
         Lattice3d lattice = null;
         File f = new File(System.getProperty("user.dir") + File.separator + "status");
         if (f.exists()) {
@@ -201,18 +201,17 @@ public class Lattice3d implements Serializable, Constants {
                     lattice.pts[0][i][j].winners = new int[featuremap_size_x][featuremap_size_y];
                 }
             }
-            LOGGER.info("Lattice Created from file");
+            log.info("Lattice Created from file");
         } else {
             lattice = new Lattice3d(null, null, null);
-            LOGGER.info("New Lattice Created");
+            log.info("New Lattice Created");
         }
 
-        lattice.orderandconvergeSOM();
+        lattice.orderAndConvergeSOM();
     }
 
-    public void orderandconvergeSOM() throws IOException, InterruptedException {
+    public void orderAndConvergeSOM() throws IOException, InterruptedException {
         boolean completed = false;
-        int succeeded_count = 0;
         PointsMask pts_mask_temp[][] = new PointsMask[lattice_size_x][lattice_size_y];
 
         this.random_mask = new double[input_size_x][input_size_y];
@@ -225,7 +224,7 @@ public class Lattice3d implements Serializable, Constants {
 
         while (true) {
 
-            succeeded_count = 0;
+            int succeeded_count = 0;
 
             if (m % 2 == 1) {
                 succeeded_count = verifyLattice(pts_mask_temp);
@@ -418,15 +417,15 @@ public class Lattice3d implements Serializable, Constants {
                     }
                 }
 
-                LOGGER.log(Level.INFO, "{0} {1}", new Object[]{max_sum, min_ed});
+                log.log(Level.INFO, "{0} {1}", new Object[]{max_sum, min_ed});
 
                 if ((this.trigerred_point_index_x != index1)
                         || (this.trigerred_point_index_y != index2)
                         || !checkMaxSum(max_sum)) {
 
-                    LOGGER.log(Level.INFO, "{0}", this.trigerred_point_index_x);
+                    log.log(Level.INFO, "{0}", this.trigerred_point_index_x);
                     //noinspection SuspiciousNameCombination
-                    LOGGER.log(Level.INFO, "{0}", this.trigerred_point_index_y);
+                    log.log(Level.INFO, "{0}", this.trigerred_point_index_y);
                     File f = new File(System.getProperty("user.dir") + File.separator + "report");
                     if (!f.exists()) {
                         f.createNewFile();
@@ -437,7 +436,7 @@ public class Lattice3d implements Serializable, Constants {
                     }
                     this.pts_mask[index1][index2].done = false;
                 } else {
-                    LOGGER.info("*");
+                    log.info("*");
                     succeeded_count++;
                 }
 
@@ -508,7 +507,7 @@ public class Lattice3d implements Serializable, Constants {
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
-        LOGGER.info(".");
+        log.info(".");
     }
 
     private void createTempLattice() throws IOException {
@@ -520,8 +519,8 @@ public class Lattice3d implements Serializable, Constants {
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(this);
         }
-        LOGGER.info("Saved");
-        LOGGER.info("Created Status");
+        log.info("Saved");
+        log.info("Created Status");
         File f1 = new File(System.getProperty("user.dir") + File.separator + "status");
         if (!f1.exists()) {
             f1.createNewFile();
@@ -553,7 +552,7 @@ public class Lattice3d implements Serializable, Constants {
                     }
                 }
 
-                LOGGER.info("winner count  at pt : " + i + " " + j + ", is : " + winner_count);
+                log.info("winner count  at pt : " + i + " " + j + ", is : " + winner_count);
 
             }
         }
@@ -591,7 +590,7 @@ public class Lattice3d implements Serializable, Constants {
             oos.writeObject(this.pts_mask);
             oos.writeObject(finalLattice.pts[0]);
         }
-        LOGGER.info("Saved Final Lattice");
+        log.info("Saved Final Lattice");
     }
 
     boolean checkMaxSum(int max_sum) {

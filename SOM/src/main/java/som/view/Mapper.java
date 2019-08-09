@@ -1,5 +1,6 @@
 package som.view;
 
+import lombok.extern.java.Log;
 import som.Constants;
 import som.lattice.Lattice3d;
 
@@ -12,8 +13,8 @@ import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Log
 public class Mapper implements Constants, Runnable {
-    private final static Logger LOGGER = Logger.getLogger(Mapper.class.getName());
     private int width = 400;
     private int height = 200;
     public JFrame frame = new JFrame();
@@ -31,8 +32,8 @@ public class Mapper implements Constants, Runnable {
     }
 
     public static void main(String[] args) throws Exception {
-        LOGGER.log(Level.INFO, "{0}", Runtime.getRuntime().totalMemory());
-        LOGGER.info(System.getProperty("user.dir"));
+        log.log(Level.INFO, "{0}", Runtime.getRuntime().totalMemory());
+        log.info(System.getProperty("user.dir"));
         new Mapper();
     }
 
@@ -195,10 +196,10 @@ public class Mapper implements Constants, Runnable {
                         }
                     }
 
-                    LOGGER.info("Lattice Created from file");
+                    log.info("Lattice Created from file");
                 } else {
                     this.lt = new Lattice3d(frame, latticeVisualizer, startStopButton);
-                    LOGGER.info("New Lattice Created");
+                    log.info("New Lattice Created");
                 }
 
                 this.startStopFlag = true;
@@ -217,7 +218,7 @@ public class Mapper implements Constants, Runnable {
         synchronized (this) {
             try {
                 this.latticeVisualizer.setLattice(this.lt);
-                this.lt.orderandconvergeSOM();
+                this.lt.orderAndConvergeSOM();
 
                 File f = new File(System.getProperty("user.dir") + File.separator + "lattice");
 
@@ -235,7 +236,7 @@ public class Mapper implements Constants, Runnable {
 
             this.startStopFlag = false;
             this.startStopButton.setText("START");
-            LOGGER.info("Saved");
+            log.info("Saved");
         }
     }
 }

@@ -30,33 +30,6 @@ public class Lattice3d implements Serializable, Constants {
     private int m;
     public PointsMask pts_mask[][];
 
-//    Lattice3d(boolean createDiffsWins) {
-//        this.pts = new Points3d[1][lattice_size_x][lattice_size_y];
-//        for (int i = 0; i < lattice_size_x; i++) {
-//            for (int j = 0; j < lattice_size_y; j++) {
-//                this.pts[0][i][j] = new Points3d(createDiffsWins);
-//            }
-//        }
-//    }
-//
-//    Lattice3d(boolean createDiffsWins, boolean createWts) {
-//        this.pts = new Points3d[1][lattice_size_x][lattice_size_y];
-//        for (int i = 0; i < lattice_size_x; i++) {
-//            for (int j = 0; j < lattice_size_y; j++) {
-//                this.pts[0][i][j] = new Points3d(createDiffsWins, createWts);
-//            }
-//        }
-//    }
-//
-//    Lattice3d(int cun_size, boolean createDiffsWins) {
-//        this.pts = new Points3d[1][lattice_size_x][lattice_size_y];
-//        for (int i = 0; i < lattice_size_x; i++) {
-//            for (int j = 0; j < lattice_size_y; j++) {
-//                this.pts[0][i][j] = new Points3d(cun_size, createDiffsWins);
-//            }
-//        }
-//    }
-
     Lattice3d(int cun_size, boolean createDiffsWins, boolean createWts) {
         this.pts = new Points3d[1][lattice_size_x][lattice_size_y];
         for (int i = 0; i < lattice_size_x; i++) {

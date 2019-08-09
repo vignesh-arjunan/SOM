@@ -4,7 +4,6 @@ import lombok.extern.java.Log;
 import som.Constants;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.logging.Logger;
 
 @Log
 public class PointCompleter extends Thread implements Constants {
